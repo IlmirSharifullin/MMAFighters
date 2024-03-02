@@ -23,4 +23,3 @@ class DBFight(Base, TimestampMixin):
 
     first_fighter: Mapped["DBFighter"] = relationship(foreign_keys=[first_fighter_id])
     second_fighter: Mapped["DBFighter"] = relationship(foreign_keys=[second_fighter_id])
-

@@ -9,7 +9,7 @@ from .base import BaseRepository
 if TYPE_CHECKING:
     from ..models import DBFighter
 
-
+    
 class FightRepository(BaseRepository):
     async def get(self, fight_id: int) -> Optional[DBFight]:
         return cast(
