@@ -6,7 +6,7 @@
 
 
 Ильмир:
-db - SQLAlchemy + asyncpg + PostgreSQL
+db - SQLAlchemy + psycopg + PostgreSQL
 сделать модели:
 1. пользователя(user), 
 2. бойца(fighter) со всей статистикой, 
