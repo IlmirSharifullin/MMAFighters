@@ -15,7 +15,7 @@ class Settings(BaseSettings):
 
     def build_postgres_dsn(self) -> str:
         return (
-            "postgresql+asyncpg://"
+            "postgresql+psycopg://"
             f"{self.postgres_user}:{self.postgres_password}"
             f"@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
         )
