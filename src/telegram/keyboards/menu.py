@@ -15,8 +15,8 @@ select_data = InlineKeyboardMarkup(inline_keyboard=[
     ],
     [
         InlineKeyboardButton(
-            text='Поиск по имени и фамилии бойца',
-            callback_data='search_fighters'
+            text='Прогноз на следующий бой',
+            callback_data='forecast'
         )
     ],
     [
