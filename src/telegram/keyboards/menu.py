@@ -1,12 +1,28 @@
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-TOKEN_API = "7084539173:AAGeFyKvQJE-ACjaDOdCJCNFiDtVADmlPTc"
-
-bot = Bot(TOKEN_API)
-dp = Dispatcher(bot)
-@dp.message.handler()
-async def echo(message:types.Message):
-    await message.answer(text = message.text)
-
-if __name__ == '__main__':
-    executor.start_polling(dp)
+select_data = InlineKeyboardMarkup(inline_keyboard=[
+    [
+        InlineKeyboardButton(
+            text='Следующий бой',
+            callback_data='next_fight'
+        )
+    ],
+    [
+        InlineKeyboardButton(
+            text='Предыдущий бой',
+            callback_data='past_fight'
+        )
+    ],
+    [
+        InlineKeyboardButton(
+            text='Поиск по имени и фамилии бойца',
+            callback_data='search_fighters'
+        )
+    ],
+    [
+        InlineKeyboardButton(
+            text='Карточка статистики бойца',
+            callback_data='card_of_fighters'
+        )
+    ]
+])

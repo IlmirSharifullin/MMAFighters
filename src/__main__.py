@@ -1,13 +1,23 @@
+import asyncio
+
+from aiogram import Dispatcher, Bot, F
+
 from src.settings import Settings
 from dotenv import load_dotenv
+from src.telegram.handlers.main import card_of_figfters, next_fight, past_fight, search_fighters, start
 
 load_dotenv()
 
 
-def main():
+async def main():
     settings: Settings = Settings()
-    print(settings.build_postgres_dsn())
+
+    dp = Dispatcher()
+    bot = Bot(token=settings.bot_token.get_secret_value())
+
+    dp.include_routers(start.router,card_of_figfters.router, next_fight.router, past_fight.router,search_fighters.router)
+    await dp.start_polling(bot)
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
