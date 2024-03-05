@@ -22,4 +22,3 @@ def get_repository() -> Repository:
 async def test():
     repo = get_repository()
     print(await repo.fighter.insert('Ильмир', "Россия", "Самбо", "UFC", "Казань", 18, datetime.datetime.now(), 77, 185, "Средняя", 180, 5, 2, 2, 1, 1, 1, 0, 0))
-
