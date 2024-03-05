@@ -23,7 +23,6 @@ async def parse_all_info(headers):
     with open('all_fighters_dict_2.json', encoding='utf-8') as file:
         all_fighters = json.load(file)
 
-
     count = 0
     fighters = []
     for fighter_name, fighter_href in all_fighters.items():
@@ -39,8 +38,7 @@ async def parse_all_info(headers):
 
         params_heads = soup.find_all(class_='Head_infoItemLeft__v1Gje')
         fighters_data = soup.find_all(class_='Head_infoItemRight__fqxnt')
-        wins = soup.find_all(class_='Head_blockTotal__vdcMN')[0].text.split(' ')[0]
-        loses = soup.find_all(class_='Head_blockTotal__vdcMN')[1].text.split(' ')[0]
+
         w_stats = soup.find_all(class_='Head_blockTotal__vdcMN')[0].find_next_sibling()
         l_stats = soup.find_all(class_='Head_blockTotal__vdcMN')[1].find_next_sibling()
 
@@ -76,15 +74,24 @@ async def parse_all_info(headers):
             fighter_dict[params_heads[i].text] = fighters_data[i].text if fighters_data[i] != '' else fighters_data[
                 i + 1].text
 
-        fighter_dict['Победы'] = int(wins)
+        fighter_dict['Победы'] = 0
         fighter_dict['Нокаут_победы'] = 0
         fighter_dict['Сабмишн_победы'] = 0
         fighter_dict['Суд_решения_победы'] = 0
 
-        fighter_dict['Поражения'] = int(loses)
+        fighter_dict['Поражения'] = 0
         fighter_dict['Нокаут_поражения'] = 0
         fighter_dict['Сабмишн_поражения'] = 0
         fighter_dict['Суд_решения_поражения'] = 0
+
+        wins_loses = soup.find_all(class_='Head_blockTotal__vdcMN')
+        for item in wins_loses:
+            name = item.text
+            if 'Поб' in name:
+                fighter_dict['Победы'] = name.split(' ')[0]
+
+            if 'Пор' in name:
+                fighter_dict['Поражения'] = name.split(' ')[0]
 
         for item in w_stats:
             name = item.text
