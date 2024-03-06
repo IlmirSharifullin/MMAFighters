@@ -23,12 +23,12 @@ async def parse_all_info(headers):
     with open('all_fighters_dict_2.json', encoding='utf-8') as file:
         all_fighters = json.load(file)
 
-    count = 0
+    # count = 0
     fighters = []
     for fighter_name, fighter_href in all_fighters.items():
 
-        count += 1
-        print(fighter_name, count)
+        # count += 1
+        # print(fighter_name, count)
 
         url = fighter_href
         req = requests.get(url, headers)
@@ -38,9 +38,6 @@ async def parse_all_info(headers):
 
         params_heads = soup.find_all(class_='Head_infoItemLeft__v1Gje')
         fighters_data = soup.find_all(class_='Head_infoItemRight__fqxnt')
-
-        w_stats = soup.find_all(class_='Head_blockTotal__vdcMN')[0].find_next_sibling()
-        l_stats = soup.find_all(class_='Head_blockTotal__vdcMN')[1].find_next_sibling()
 
         fighter_dict = {'Имя': fighter_name}
         fighter_dict['Страна'] = ''
@@ -57,15 +54,21 @@ async def parse_all_info(headers):
         for i in range(len(params_heads)):
             if params_heads[i].text == 'Возраст':
                 fighter_dict[params_heads[i].text] = int(fighters_data[i].text.split(' ')[0])
-                fighter_dict['Дата_рождения'] = datetime.datetime.strptime(fighters_data[i].text.split()[2][1:-1],
+                fighter_dict['Дата рождения'] = datetime.datetime.strptime(fighters_data[i].text.split()[2][1:-1],
                                                                            '%d.%m.%Y')
                 continue
 
             if params_heads[i].text == 'Рост, вес':
-                fighter_dict['Рост'] = int(fighters_data[i].text.split(' ')[0])
-                fighter_dict['Вес'] = int(fighters_data[i].text.split(' ')[1][3:]) if fighters_data[i] != '' else (
-                    fighters_data[i + 1].text.split(' ')[1][3:])
-                continue
+                if '.' not in fighters_data[i].text.split(' ')[0]:
+                    fighter_dict['Рост'] = int(fighters_data[i].text.split(' ')[0])
+                else:
+                    fighter_dict['Вес'] = int(fighters_data[i].text.split(' ')[0].split('.')[0])
+
+                if '.' not in fighters_data[i].text.split(' ')[1][3:]:
+                    fighter_dict['Вес'] = int(fighters_data[i].text.split(' ')[1][3:]) if fighters_data[i] != '' else (
+                        fighters_data[i + 1].text.split(' ')[1][3:])
+                else:
+                    fighter_dict['Вес'] = int(fighters_data[i].text.split(' ')[1][3:].split('.')[0])
 
             if params_heads[i].text == 'Размах рук':
                 fighter_dict[params_heads[i].text] = int(fighters_data[i].text.split(' ')[0])
@@ -88,10 +91,18 @@ async def parse_all_info(headers):
         for item in wins_loses:
             name = item.text
             if 'Поб' in name:
-                fighter_dict['Победы'] = name.split(' ')[0]
+                fighter_dict['Победы'] = name.split(' ')[0] if name.split(' ')[0] != '-' else 0
 
             if 'Пор' in name:
-                fighter_dict['Поражения'] = name.split(' ')[0]
+                fighter_dict['Поражения'] = name.split(' ')[0] if name.split(' ')[0] != '-' else 0
+
+        w_l_stats = soup.find_all(class_='Head_blockTotal__vdcMN')
+        if len(w_l_stats) > 0:
+            w_stats = soup.find_all(class_='Head_blockTotal__vdcMN')[0].find_next_sibling()
+            l_stats = soup.find_all(class_='Head_blockTotal__vdcMN')[1].find_next_sibling()
+        else:
+            w_stats = []
+            l_stats = []
 
         for item in w_stats:
             name = item.text
@@ -137,5 +148,3 @@ async def parse_all_info(headers):
                                   defeats_knockouts_count=fighter_dict['Нокаут_поражения'],
                                   defeats_submissions_count=fighter_dict['Сабмишн_поражения'],
                                   defeats_judges_decisions_count=fighter_dict['Суд_решения_поражения'])
-
-        print('done')
