@@ -50,4 +50,4 @@ def pars_fighter_hrefs(url, headers):
         json.dump(all_fighters, file, indent=4, ensure_ascii=False)
 
 
-pars_fighter_hrefs(url_mma, Us_headers)
+
