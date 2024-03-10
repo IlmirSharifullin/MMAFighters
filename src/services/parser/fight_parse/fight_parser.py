@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 import requests
 import json
+import re
 
 from src.factories import get_repository
 
@@ -41,17 +42,29 @@ def parse_fight_date(headers):
                             'first_fighter_id': 0,
                             'second_fighter_id': 0,
                             'date': datetime.datetime.strptime(fight.find('time').get('datetime'), '%Y-%m-%d %H:%M'),
-                            'place': ''
+                            'place': '',
+                            'fight_url': 'https://mma.metaratings.ru' + fight.find('a').get('href')
                           }
 
-            fight_url = 'https://mma.metaratings.ru' + fight.find('a').get('href')
-            req = requests.get(fight_url, headers)
+            req = requests.get(fight_info['fight_url'], headers)
             src = req.text
             soup = BeautifulSoup(src, 'lxml')
+
+            information = str(soup.find(class_='versus-info workarea-text').find('div'))
+            info_split = information.split('<br/>')
+            for j in range(len(info_split)):
+                if re.search("[А-я’Ёё]*[ -]*[А-я’Ёё]*[ -]*[А-я’Ёё]* [(][А-я’Ёё]*[)] – [А-я’Ёё]*[ -]*[А-я’Ёё]*[ -]*["
+                             "А-я’Ёё]* [(][А-я’Ёё]*[)]", info_split[j]):
+                    fighters_names = re.findall("[А-я’Ёё][ -]*[А-я’Ёё]*[ -]*[А-я’Ёё]* ", info_split[j])
+                    first_fighter_name = fighters_names[0] if fighters_names[0] else ''
+                    second_fighter_name = fighters_names[1] if fighters_names[1] else ''
+                    place = ''
+                    if info_split[j+1] != info_split[-1]:
+                        place = info_split[j+1]
+                        fight_info['place'] = place
+
+                    print(first_fighter_name, second_fighter_name, place)
 
             all_fights.append(fight_info)
 
     print(all_fights)
-
-
-
