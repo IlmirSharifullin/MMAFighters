@@ -1,13 +1,7 @@
 import asyncio
 import sys
-from src.factories import get_repository
-from src.services.parser.fighter_info_parser import parse_all_info
-import datetime
-import time
-from bs4 import BeautifulSoup
+from src.parser.fighter_parse.fighter_info_parser import parse_all_info
 from fake_useragent import UserAgent
-import requests
-import json
 
 ua = UserAgent()
 
