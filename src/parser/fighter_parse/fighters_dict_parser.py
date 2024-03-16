@@ -10,13 +10,13 @@ st_accept = "text/html"
 st_useragent = ua.chrome
 url_mma = "https://mma.metaratings.ru/persons/"
 
-Us_headers = {
+headers = {
     "Accept": st_accept,
     "User-Agent": st_useragent
 }
 
 
-def pars_fighter_hrefs(url, headers):
+def parse_fighter_hrefs(url):
     # create and filling .html file with main page
     req = requests.get(url, headers)
     src = req.text
@@ -48,6 +48,3 @@ def pars_fighter_hrefs(url, headers):
     # create and filling .json file with names and links to fighters pages
     with open('all_fighters_dict_2.json', 'w', encoding='utf-8') as file:
         json.dump(all_fighters, file, indent=4, ensure_ascii=False)
-
-
-

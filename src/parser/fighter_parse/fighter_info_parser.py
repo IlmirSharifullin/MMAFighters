@@ -13,13 +13,13 @@ st_accept = "text/html"
 st_useragent = ua.chrome
 url_mma = "https://mma.metaratings.ru/persons/"
 
-s_headers = {
+headers = {
     "Accept": st_accept,
     "User-Agent": st_useragent
 }
 
 
-async def parse_all_info(headers):
+async def parse_all_info():
     with open('all_fighters_dict_2.json', encoding='utf-8') as file:
         all_fighters = json.load(file)
 

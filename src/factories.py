@@ -12,6 +12,7 @@ load_dotenv()
 def get_repository() -> Repository:
     settings: Settings = Settings()
     dsn = settings.build_postgres_dsn()
+    # print(dsn)
     pool = create_pool(dsn=dsn)
     repository = Repository(session=pool())
     return repository
@@ -19,12 +20,7 @@ def get_repository() -> Repository:
 
 async def test():
     repo = get_repository()
-    fight = await repo.fight.get(2)
-
-    test_unique = await repo.fight.create(fight.first_fighter, fight.second_fighter, fight.date, fight.place)
-
+    fighters = await repo.fighter.get_all()
+    two = fighters[:2]
+    fight = await repo.fight.create(two[0], two[1], datetime.datetime.now(), 'Moscow Arena')
     print(fight)
-    print(test_unique)
-    print(fight == test_unique)
-
-asyncio.run(test())
