@@ -17,10 +17,12 @@ class FightRepository(BaseRepository):
             await self._session.scalar(select(DBFight).where(DBFight.id == fight_id)),
         )
 
-    async def insert(self, first_fighter: "DBFighter", second_fighter: "DBFighter", date: datetime.datetime, place: str):
+    async def create(self, first_fighter: "DBFighter", second_fighter: "DBFighter", date: datetime.datetime, place: str):
         db_fight = DBFight(
             first_fighter=first_fighter,
             second_fighter=second_fighter,
+            first_fighter_id=first_fighter.id,
+            second_fighter_id=second_fighter.id,
             date=date,
             place=place
         )

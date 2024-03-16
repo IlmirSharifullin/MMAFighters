@@ -14,6 +14,16 @@ class FighterRepository(BaseRepository):
             await self._session.scalar(select(DBFighter).where(DBFighter.id == fighter_id)),
         )
 
+    async def get_by_name(self, name: str) -> Optional[DBFighter]:
+        return cast(
+            Optional[DBFighter],
+            await self._session.scalar(select(DBFighter).where(DBFighter.name == name))
+        )
+
+    async def get_all(self) -> list[DBFighter]:
+        query = await self._session.execute(select(DBFighter))
+        return [x[0] for x in query.fetchall()]
+
     async def insert(self, name: str, country: str, base_style: str, promotion: str, city: str, age: int,
                      date_of_birth: datetime.datetime, weight: int, height: int, weight_category: str, arm_span: int,
                      wins_count: int, wins_knockouts_count: int, wins_submissions_count: int,

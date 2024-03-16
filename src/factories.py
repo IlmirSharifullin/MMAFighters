@@ -1,6 +1,5 @@
 import asyncio
 import datetime
-from asyncio import WindowsSelectorEventLoopPolicy
 
 from dotenv import load_dotenv
 
@@ -21,4 +20,7 @@ def get_repository() -> Repository:
 
 async def test():
     repo = get_repository()
-    print(await repo.fighter.insert('Ильмир', "Россия", "Самбо", "UFC", "Казань", 18, datetime.datetime.now(), 77, 185, "Средняя", 180, 5, 2, 2, 1, 1, 1, 0, 0))
+    fighters = await repo.fighter.get_all()
+    two = fighters[:2]
+    fight = await repo.fight.create(two[0], two[1], datetime.datetime.now(), 'Moscow Arena')
+    print(fight)
