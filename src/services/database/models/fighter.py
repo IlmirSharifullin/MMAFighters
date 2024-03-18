@@ -1,8 +1,12 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base, TimestampMixin, Int64, Int16
+
+if TYPE_CHECKING:
+    from .fight import DBFight
 
 
 class DBFighter(Base, TimestampMixin):
@@ -28,3 +32,4 @@ class DBFighter(Base, TimestampMixin):
     defeats_knockouts_count: Mapped[Int16]
     defeats_submissions_count: Mapped[Int16]
     defeats_judges_decisions_count: Mapped[Int16]
+
