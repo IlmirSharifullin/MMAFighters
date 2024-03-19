@@ -19,12 +19,7 @@ def get_repository() -> Repository:
 
 async def test():
     repo = get_repository()
-    fight = await repo.fight.get(2)
 
-    test_unique = await repo.fight.create(fight.first_fighter, fight.second_fighter, fight.date, fight.place)
+    randomized = await repo.fight.get_random_n(5)
+    print(randomized)
 
-    print(fight)
-    print(test_unique)
-    print(fight == test_unique)
-
-asyncio.run(test())
