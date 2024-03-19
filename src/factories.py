@@ -12,6 +12,7 @@ load_dotenv()
 def get_repository() -> Repository:
     settings: Settings = Settings()
     dsn = settings.build_postgres_dsn()
+    # print(dsn)
     pool = create_pool(dsn=dsn)
     repository = Repository(session=pool())
     return repository
@@ -19,7 +20,5 @@ def get_repository() -> Repository:
 
 async def test():
     repo = get_repository()
-
     randomized = await repo.fight.get_random_n(5)
     print(randomized)
-
