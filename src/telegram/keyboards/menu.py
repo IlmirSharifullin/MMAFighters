@@ -1,28 +1,19 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import  ReplyKeyboardMarkup, KeyboardButton
 
-select_data = InlineKeyboardMarkup(inline_keyboard=[
+select_data = ReplyKeyboardMarkup(keyboard=[
     [
-        InlineKeyboardButton(
-            text='Следующий бой',
-            callback_data='next_fight'
+        KeyboardButton(
+            text='Следующий бой'
         )
     ],
     [
-        InlineKeyboardButton(
-            text='Предыдущий бой',
-            callback_data='past_fight'
-        )
-    ],
-    [
-        InlineKeyboardButton(
+        KeyboardButton(
             text='Прогноз на следующий бой',
-            callback_data='forecast'
         )
-    ],
-    [
-        InlineKeyboardButton(
-            text='Карточка статистики бойца',
-            callback_data='card_of_fighters'
+    ,
+
+        KeyboardButton(
+            text='Карточка бойца',
         )
     ]
 ])

@@ -1,8 +1,10 @@
 from aiogram import Router, Bot, F
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, Message
+
+from src.services.database import Repository
+
 router = Router(name='next_fight')
-@router.callback_query(F.data=='next_fight')
-async def select_data(call: CallbackQuery, bot: Bot):
+@router.message(F.text=='Следующий бой')
+async def select_data(message: Message,repository: Repository ):
     answer = 'Прости, я пока не обладаю такой информацией'
-    await call.message.answer(answer)
-    await call.answer()
+    await message.answer(answer)
