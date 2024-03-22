@@ -20,9 +20,9 @@ async def get_card(message: Message,repository: Repository, state: FSMContext ):
     await message.answer(text)
     await state.clear()
 def get_fighter_card(fighter: DBFighter):
-    text = (f'Имя бойца - {fighter.name}, возраст - {fighter.age}, страна - {fighter.country}, базовый стиль - {fighter.base_style}, '
-            f' город - {fighter.city}, рост - {fighter.height} см, вес - {fighter.weight} кг, весовая категория - {fighter.weight_category}, продвижение - {fighter.promotion}, размах рук - {fighter.arm_span} см,'
-            f' количество побед - {fighter.wins_count}, количество поражений - {fighter.defeats_count}, побед нокаутом - {fighter.wins_knockouts_count}, поражений нокаутом - {fighter.defeats_knockouts_count}'
-            f'побед судейским решением - {fighter.wins_judges_decisions_count}, поражений судейским решением - {fighter.defeats_judges_decisions_count}, сабмишн побед - {fighter.wins_submissions_count}, сабмишн поражений - {fighter.defeats_submissions_count}')
+    text = (f'Имя бойца - {fighter.name},\nвозраст - {fighter.age},\nстрана - {fighter.country},\nбазовый стиль - {fighter.base_style}, '
+            f'\nгород - {fighter.city},\nрост - {fighter.height} см,\nвес - {fighter.weight} кг,\nвесовая категория - {fighter.weight_category},\nпродвижение - {fighter.promotion},\nразмах рук - {fighter.arm_span} см,'
+            f'\nколичество побед - {fighter.wins_count},\nколичество поражений - {fighter.defeats_count},\nпобед нокаутом - {fighter.wins_knockouts_count},\nпоражений нокаутом - {fighter.defeats_knockouts_count}'
+            f'\nпобед судейским решением - {fighter.wins_judges_decisions_count},\nпоражений судейским решением - {fighter.defeats_judges_decisions_count},\nсабмишн побед - {fighter.wins_submissions_count},\nсабмишн поражений - {fighter.defeats_submissions_count}')
 
     return text
