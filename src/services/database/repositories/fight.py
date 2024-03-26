@@ -1,5 +1,6 @@
 import datetime
 from typing import Optional, cast, TYPE_CHECKING
+import random
 
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
@@ -17,6 +18,20 @@ class FightRepository(BaseRepository):
             Optional[DBFight],
             await self._session.scalar(select(DBFight).where(DBFight.id == fight_id).options(joinedload('*'))),
         )
+
+    async def get_next(self):
+        now = datetime.datetime.now()
+        res = await self._session.execute(select(DBFight).where(DBFight.date > now).order_by(DBFight.date).options(joinedload('*')))
+        res = res.fetchall()
+        if res is not None and len(res) > 0:
+            return res[0][0]
+        else:
+            return None
+
+    async def get_random_n(self, n: int) -> list[DBFight]:
+        res = await self._session.execute(select(DBFight).options(joinedload('*')))
+        res = [x[0] for x in res.fetchall()]
+        return random.choices(res, k=n)
 
     async def _exists(self, first_fighter_id: int, second_fighter_id: int, place: str, date: datetime.datetime):
         return cast(

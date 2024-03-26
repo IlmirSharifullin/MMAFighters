@@ -20,7 +20,5 @@ def get_repository() -> Repository:
 
 async def test():
     repo = get_repository()
-    fighters = await repo.fighter.get_all()
-    two = fighters[:2]
-    fight = await repo.fight.create(two[0], two[1], datetime.datetime.now(), 'Moscow Arena')
-    print(fight)
+    randomized = await repo.fight.get_random_n(5)
+    print(randomized)
