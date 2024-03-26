@@ -3,6 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from src.services.database import Repository, DBFighter
+from src.telegram.handlers.main.get_fighter_card import get_fighter_card
 from src.telegram.states import FighterCardStates
 
 router = Router(name='card_of_fighters')
@@ -19,10 +20,4 @@ async def get_card(message: Message,repository: Repository, state: FSMContext ):
     text = get_fighter_card(fighter)
     await message.answer(text)
     await state.clear()
-def get_fighter_card(fighter: DBFighter):
-    text = (f'Имя бойца - {fighter.name}, возраст - {fighter.age}, страна - {fighter.country}, базовый стиль - {fighter.base_style}, '
-            f' город - {fighter.city}, рост - {fighter.height} см, вес - {fighter.weight} кг, весовая категория - {fighter.weight_category}, продвижение - {fighter.promotion}, размах рук - {fighter.arm_span} см,'
-            f' количество побед - {fighter.wins_count}, количество поражений - {fighter.defeats_count}, побед нокаутом - {fighter.wins_knockouts_count}, поражений нокаутом - {fighter.defeats_knockouts_count}'
-            f'побед судейским решением - {fighter.wins_judges_decisions_count}, поражений судейским решением - {fighter.defeats_judges_decisions_count}, сабмишн побед - {fighter.wins_submissions_count}, сабмишн поражений - {fighter.defeats_submissions_count}')
 
-    return text
