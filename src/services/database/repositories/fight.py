@@ -42,7 +42,10 @@ class FightRepository(BaseRepository):
                                                              DBFight.date == date).options(joinedload('*'))))
 
     async def create(self, first_fighter: "DBFighter", second_fighter: "DBFighter", date: datetime.datetime,
-                     place: str):
+                     place: str) -> tuple[DBFight, bool]:
+        """
+        return: tuple[DBFight, bool(if dbfight already exists True, else False)]
+        """
         existing_fight = await self._exists(first_fighter_id=first_fighter.id, second_fighter_id=second_fighter.id,
                                             place=place, date=date)
 
@@ -56,6 +59,6 @@ class FightRepository(BaseRepository):
                 place=place
             )
             await self.commit(db_fight)
-            return db_fight
+            return db_fight, True
 
-        return existing_fight
+        return existing_fight, False
