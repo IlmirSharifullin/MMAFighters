@@ -15,6 +15,10 @@ class UserRepository(BaseRepository):
             await self._session.scalar(select(DBUser).where(DBUser.id == user_id)),
         )
 
+    async def get_all(self) -> list[DBUser]:
+        res = await self._session.execute(select(DBUser))
+        return [x[0] for x in res.fetchall()]
+
     async def create_from_telegram(self, user: User, locale: str, chat: Chat) -> DBUser:
         db_user: DBUser = DBUser(
             id=user.id,
