@@ -1,14 +1,13 @@
 import asyncio
 import datetime
-import time
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 import requests
-import json
 import re
 import sys
 
 from src.factories import get_repository
+from src.services.database import DBFight
 
 ua = UserAgent()
 
@@ -22,7 +21,8 @@ headers = {
 }
 
 
-async def parse_fight_date(left, right):
+async def parse_fight_date(left, right) -> list[DBFight]:
+    new_fights = []
     for i in range(left, right + 1):
 
         url = f'https://mma.metaratings.ru/prognozy/?page={i}'
@@ -53,25 +53,26 @@ async def parse_fight_date(left, right):
                     fighters_names = re.findall("[А-я’Ёё][ -]*[А-я’Ёё]*[ -]*[А-я’Ёё]* ", info_split[j])
                     first_fighter_name = fighters_names[0][:-1] if fighters_names[0] else ''
                     second_fighter_name = fighters_names[1][:-1] if fighters_names[1] else ''
-                    place = ''
+                    fight_place = ''
                     if info_split[j + 1] != info_split[-1]:
-                        place = info_split[j + 1]
+                        fight_place = info_split[j + 1]
 
                     repository = get_repository()
-                    f_fighter = await repository.fighter.get_by_name(first_fighter_name)
-                    s_fighter = await repository.fighter.get_by_name(second_fighter_name)
 
-                    if f_fighter is None or s_fighter is None:
-                        print(first_fighter_name)
+                    first_fighter = await repository.fighter.get_by_name(first_fighter_name)
+                    second_fighter = await repository.fighter.get_by_name(second_fighter_name)
+
+                    if first_fighter is None or second_fighter is None:
                         break
 
-                    fight = await repository.fight.create(first_fighter=f_fighter, second_fighter=s_fighter,
-                                                          date=fight_date, place=place)
-
-                    print(f_fighter, s_fighter)
-                    print(fight)
-
+                    fight, is_new = await repository.fight.create(first_fighter=first_fighter,
+                                                                  second_fighter=second_fighter,
+                                                                  date=fight_date, place=fight_place)
+                    if is_new:
+                        new_fights.append(fight)
                     break
+
+    return new_fights
 
 
 if sys.platform == "win32":
