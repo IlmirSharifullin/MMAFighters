@@ -9,5 +9,6 @@ class DBUser(Base, TimestampMixin):
     __tablename__ = "users"
 
     id: Mapped[Int64] = mapped_column(primary_key=True)
-    name: Mapped[str]
+    chat_id: Mapped[int]
+    first_name: Mapped[str]
     username: Mapped[str]

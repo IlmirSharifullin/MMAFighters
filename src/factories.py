@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 
+from aiogram import Bot
 from dotenv import load_dotenv
 
 from src.services.database import Repository, create_pool
@@ -18,7 +19,14 @@ def get_repository() -> Repository:
     return repository
 
 
+def get_bot() -> Bot:
+    settings: Settings = Settings()
+
+    bot = Bot(settings.bot_token.get_secret_value())
+    return bot
+
+
 async def test():
     repo = get_repository()
-    randomized = await repo.fight.get_random_n(5)
+    randomized = await repo.fight.get_next()
     print(randomized)
