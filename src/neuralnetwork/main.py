@@ -44,20 +44,18 @@ async def calculate_probability(fighter1: DBFighter, fighter2: DBFighter, svm_we
     dkc_weight = svm_weights[9]
     dsc_weight = svm_weights[10]
     djdc_weight = svm_weights[11]
-
-    #Альтернативный вид с прямым испрользованием весов
-    # age_weight = 1.1988397511564817
-    # weight_weight = -0.20566306520909716
-    # height_weight = -0.10988991979202933
-    # span_weight = 0.07760138349250933
-    # wins_weight = -0.2601286961343403
-    # wkc_weight = -0.33153297315333896
-    # wsc_weight = 0.5236474289291326
-    # wjdc_weight = 0.2744404237376621
-    # defeats_weight = 0.01640528134506658
-    # dkc_weight = -1.3177968538027653
-    # dsc_weight = -2.220446049250313e-16
-    # djdc_weight = 1.0849840035592986
+    # age_weight = 1.1986478377823848
+    # weight_weight = -0.23364424902161374
+    # height_weight = -0.1136839384776156
+    # span_weight = 0.06893293397933253
+    # wins_weight = -0.26352747361195306
+    # wkc_weight = -0.3315750105958557
+    # wsc_weight = 0.508491070682267
+    # wjdc_weight = 0.266124682937833
+    # defeats_weight = 0.023686426096847235
+    # dkc_weight = -1.280754818381829
+    # dsc_weight = 4.440892098500626e-16
+    # djdc_weight = 1.07195549714112
 
     total_score1 = (
             age1 * age_weight +
@@ -90,12 +88,12 @@ async def calculate_probability(fighter1: DBFighter, fighter2: DBFighter, svm_we
     )
 
     total_score = total_score1 + total_score2
-    probability_fighter1 = total_score1 / total_score *100
-    probability_fighter2 = total_score2 / total_score *100
+    probability_fighter1 = total_score1 / total_score * 100
+    probability_fighter2 = total_score2 / total_score * 100
 
     return probability_fighter1, probability_fighter2
 
-# ЭТО ТОЛЬКО ДЛЯ ТЕСТИРОВАНИЯ!!
+#ДЛЯ ПРОВЕРКИ
 # async def process_fights(json_file_path, callback_function):
 #     repo: Repository = get_repository()
 #     total_fights = 0
@@ -111,29 +109,31 @@ async def calculate_probability(fighter1: DBFighter, fighter2: DBFighter, svm_we
 #             fighter1 = await repo.fighter.get_by_name(first_fighter_name)
 #             fighter2 = await repo.fighter.get_by_name(second_fighter_name)
 #
+#             # Ожидание выполнения корутины calculate_probability
 #             probability_fighter1, probability_fighter2 = await calculate_probability(fighter1, fighter2, svm_weights)
+#
 #
 #             callback_function(first_fighter_name, second_fighter_name, winner, probability_fighter1,
 #                               probability_fighter2)
 #
+#             # Выбор предсказанного победителя
 #             predicted_winner = first_fighter_name if sum((probability_fighter1)) > sum((probability_fighter2)) else second_fighter_name
-#
+#             # Проверка, соответствует ли предсказанный победитель действительному
 #             if (predicted_winner == first_fighter_name and winner == 1) or (predicted_winner == second_fighter_name and winner == 2):
 #                 correct_predictions += 1
-
+#
+#     # Вывод информации о количестве угаданных и неугаданных результатов
 #     print("\nУгадано: {} из {}".format(correct_predictions, total_fights))
 #     print("Не угадано: {} из {}".format(total_fights - correct_predictions, total_fights))
 #
-#
+
 # async def main():
 #     def my_callback_function(first_fighter_name, second_fighter_name, winner, probability_fighter1,
 #                              probability_fighter2):
-#         print(f"\nБойцы: {first_fighter_name} vs {second_fighter_name}")
-#         print("\nВероятность победы для {}: {:.2f}%".format(first_fighter_name, probability_fighter1[0]))
-#         print("Вероятность победы для {}: {:.2f}%".format(second_fighter_name, probability_fighter2[0]))
 #         print("Победитель: {}".format(first_fighter_name if winner == 1 else second_fighter_name))
 #     json_file_path = "winners.json"
 #     await process_fights(json_file_path, my_callback_function)
+
 
 async def main():
     repo: Repository = get_repository()
