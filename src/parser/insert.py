@@ -9,7 +9,7 @@ st_accept = "text/html"
 st_useragent = ua.chrome
 url_mma = "https://mma.metaratings.ru/persons/"
 
-s_headers = {
+headers = {
     "Accept": st_accept,
     "User-Agent": st_useragent
 }
@@ -19,4 +19,4 @@ if sys.platform == "win32":
 
 
 def start_parse():
-    asyncio.run(parse_all_info(headers=s_headers))
+    asyncio.run(parse_all_info())
