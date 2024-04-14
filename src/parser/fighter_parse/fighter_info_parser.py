@@ -20,7 +20,7 @@ headers = {
 
 
 async def parse_all_info():
-    with open('all_fighters_dict_2.json', encoding='utf-8') as file:
+    with open('fighter_parse/all_fighters_dict_2.json', encoding='utf-8') as file:
         all_fighters = json.load(file)
 
     # count = 0
