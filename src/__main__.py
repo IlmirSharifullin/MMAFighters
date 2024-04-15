@@ -9,6 +9,8 @@ from src.middlewares.outer.database import DBSessionMiddleware
 from src.services.database import create_pool
 from src.settings import Settings
 from dotenv import load_dotenv
+
+from src.telegram import misc
 from src.telegram.handlers.main import card_of_figfters, next_fight, forecast, start
 from src.scheduler.daily_fight_parser import daily_fight_parser
 load_dotenv()
@@ -24,7 +26,7 @@ async def main():
     pool = create_pool(
         dsn=settings.build_postgres_dsn())
     dp.update.outer_middleware(DBSessionMiddleware(session_pool=pool))
-    dp.include_routers(start.router,card_of_figfters.router, next_fight.router,forecast.router)
+    dp.include_routers(start.router,card_of_figfters.router, next_fight.router,forecast.router,misc.router)
 
     scheduler = AsyncIOScheduler()
     scheduler.add_job(daily_fight_parser, trigger='cron', hour='12')
