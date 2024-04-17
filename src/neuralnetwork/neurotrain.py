@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.impute import SimpleImputer
 
-data = pd.read_csv("data.csv")
+data = pd.read_csv("src\\neuralnetwork\\data.csv")
 
 features = ["age", "weight", "height", "arm_span", "wins_count",
             "wins_knockouts_count", "wins_submissions_count", "wins_judges_decisions_count",
