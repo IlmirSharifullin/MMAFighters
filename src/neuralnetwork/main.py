@@ -3,9 +3,9 @@ import sys
 import json
 from src.factories import get_repository
 from src.services.database import DBFighter, Repository
-from neurotrain import svm_weights
+from .neurotrain import svm_weights
 
-async def calculate_probability(fighter1: DBFighter, fighter2: DBFighter, svm_weights):
+async def calculate_probability(fighter1: DBFighter, fighter2: DBFighter):
     age1 = fighter1.age
     weight1 = fighter1.weight
     height1 = fighter1.height
@@ -109,20 +109,16 @@ async def calculate_probability(fighter1: DBFighter, fighter2: DBFighter, svm_we
 #             fighter1 = await repo.fighter.get_by_name(first_fighter_name)
 #             fighter2 = await repo.fighter.get_by_name(second_fighter_name)
 #
-#             # Ожидание выполнения корутины calculate_probability
-#             probability_fighter1, probability_fighter2 = await calculate_probability(fighter1, fighter2, svm_weights)
+#             probability_fighter1, probability_fighter2 = await calculate_probability(fighter1, fighter2)
 #
 #
 #             callback_function(first_fighter_name, second_fighter_name, winner, probability_fighter1,
 #                               probability_fighter2)
 #
-#             # Выбор предсказанного победителя
 #             predicted_winner = first_fighter_name if sum((probability_fighter1)) > sum((probability_fighter2)) else second_fighter_name
-#             # Проверка, соответствует ли предсказанный победитель действительному
 #             if (predicted_winner == first_fighter_name and winner == 1) or (predicted_winner == second_fighter_name and winner == 2):
 #                 correct_predictions += 1
 #
-#     # Вывод информации о количестве угаданных и неугаданных результатов
 #     print("\nУгадано: {} из {}".format(correct_predictions, total_fights))
 #     print("Не угадано: {} из {}".format(total_fights - correct_predictions, total_fights))
 #
