@@ -10,3 +10,5 @@ requests~=2.31.0
 beautifulsoup4~=4.12.3
 APScheduler~=3.10.4
 fake-useragent~=1.5.1
+pandas~=2.2.2
+scikit-learn~=1.4.1.post1
