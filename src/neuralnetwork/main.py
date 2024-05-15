@@ -5,6 +5,7 @@ from src.factories import get_repository
 from src.services.database import DBFighter, Repository
 from .neurotrain import svm_weights
 
+
 async def calculate_probability(fighter1: DBFighter, fighter2: DBFighter):
     age1 = fighter1.age
     weight1 = fighter1.weight
